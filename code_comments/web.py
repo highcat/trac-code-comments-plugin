@@ -274,6 +274,10 @@ class CommentsREST(CodeComments):
         #TODO: catch errors
         if '/' + self.href == req.path_info:
             if 'GET' == req.method:
+                # dirty fix for my Trac 1.0.1 with Postgres                                                                                                                                                                                                                      
+                if req.args.get('revision') in ['null', '']:
+                    del req.args['revision']
+
                 self.return_json(req, Comments(req, self.env).search(req.args))
             if 'POST' == req.method:
                 comments = Comments(req, self.env)
